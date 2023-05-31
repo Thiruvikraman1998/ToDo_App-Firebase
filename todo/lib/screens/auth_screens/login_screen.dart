@@ -70,8 +70,11 @@ class _LoginScreenState extends State<LoginScreen> {
               height: height(50),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(height(25))),
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(
+                  height(25),
+                ),
+              ),
               child: const TextField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -100,6 +103,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             const Gap(40),
+
+            // Login button
             SizedBox(
               height: height(55),
               width: width(250),
@@ -135,6 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             const Gap(50),
+
+            // Social media login's
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -172,7 +179,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 )
               ],
-            )
+            ),
+
+            // Already a user...?
           ],
         ),
       ),
