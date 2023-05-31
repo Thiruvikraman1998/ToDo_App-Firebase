@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AppLayout {
+  static getsize(BuildContext context) {
+    return MediaQuery.of(context).size;
+  }
+
   static getScreenHeight() {
     return Get.height;
   }

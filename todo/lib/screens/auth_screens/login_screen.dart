@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = AppLayout.getsize(context);
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
@@ -45,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 )
               ],
             ),
-            const Gap(50),
+            const Gap(40),
 
             //Email / ph no
             Container(
@@ -72,11 +73,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(height(25))),
               child: const TextField(
+                obscureText: true,
                 decoration: InputDecoration(
-                    hintText: "Password", border: InputBorder.none),
+                    hintText: "Password",
+                    border: InputBorder.none,
+                    suffixIcon: Icon(Icons.remove_red_eye_outlined),
+                    suffixIconColor: Colors.grey),
               ),
             ),
-            const Gap(20),
+            const Gap(10),
             Row(
               children: [
                 Checkbox(
@@ -86,6 +91,85 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Text(
                   "Remember me",
                   style: TextStyle(fontSize: 15),
+                ),
+                const Spacer(),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text("Forgot password?"),
+                )
+              ],
+            ),
+            const Gap(40),
+            SizedBox(
+              height: height(55),
+              width: width(250),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text(
+                  "Login",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
+            const Gap(60),
+            Row(
+              children: [
+                Expanded(
+                  child: Divider(color: Colors.grey[400], thickness: 2),
+                ),
+                const Gap(5),
+                const Text("Or Sign in with"),
+                const Gap(5),
+                Expanded(
+                  child: Divider(color: Colors.grey[400], thickness: 2),
+                ),
+              ],
+            ),
+            const Gap(50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  height: height(40),
+                  width: size.width * 0.1,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    image: const DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/images/google.png'),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: height(40),
+                  width: size.width * 0.1,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    image: const DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/images/facebook.png'),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: height(40),
+                  width: size.width * 0.1,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    image: const DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/images/apple-logo.png'),
+                    ),
+                  ),
                 )
               ],
             )
