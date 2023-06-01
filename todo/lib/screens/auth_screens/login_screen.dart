@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:todo/utils/app_layout.dart';
@@ -18,6 +20,31 @@ class _LoginScreenState extends State<LoginScreen> {
   double width(double pixels) {
     double width = AppLayout.getWidth(pixels);
     return width;
+  }
+
+  final TapGestureRecognizer _signUpRecognizer = TapGestureRecognizer();
+  final TextEditingController _emailOrPhoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool isPasswordVisible = false;
+  bool isCheckBoxChecked = false;
+
+  List socialIconsUrl = ['google.png', 'facebook.png', 'apple-logo.png'];
+
+  @override
+  void initState() {
+    _signUpRecognizer.onTap = () {
+      print("Sign Up clicked");
+    };
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailOrPhoneController.dispose();
+    _passwordController.dispose();
+    _signUpRecognizer.dispose();
+    super.dispose();
   }
 
   @override
@@ -56,8 +83,9 @@ class _LoginScreenState extends State<LoginScreen> {
               decoration: BoxDecoration(
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(height(25))),
-              child: const TextField(
-                decoration: InputDecoration(
+              child: TextField(
+                controller: _emailOrPhoneController,
+                decoration: const InputDecoration(
                     hintText: "Email or Phone Number",
                     border: InputBorder.none),
               ),
@@ -75,12 +103,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   height(25),
                 ),
               ),
-              child: const TextField(
-                obscureText: true,
+              child: TextField(
+                controller: _passwordController,
+                obscureText: isPasswordVisible ? false : true,
                 decoration: InputDecoration(
                     hintText: "Password",
                     border: InputBorder.none,
-                    suffixIcon: Icon(Icons.remove_red_eye_outlined),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
+                      icon: const Icon(Icons.remove_red_eye_outlined),
+                    ),
                     suffixIconColor: Colors.grey),
               ),
             ),
@@ -88,8 +124,12 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               children: [
                 Checkbox(
-                  value: false,
-                  onChanged: (value) {},
+                  value: isCheckBoxChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      isCheckBoxChecked = value!;
+                    });
+                  },
                 ),
                 const Text(
                   "Remember me",
@@ -145,43 +185,43 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  height: height(40),
-                  width: size.width * 0.1,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/images/google.png'),
+                for (var url in socialIconsUrl)
+                  GestureDetector(
+                    onTap: () {
+                      print('$url is tapped');
+                    },
+                    child: Container(
+                      height: height(44),
+                      width: size.width * 0.1,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/$url'),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  height: height(40),
-                  width: size.width * 0.1,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/images/facebook.png'),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: height(40),
-                  width: size.width * 0.1,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/images/apple-logo.png'),
-                    ),
-                  ),
-                )
               ],
             ),
+            const Gap(90),
 
             // Already a user...?
+            RichText(
+              text: TextSpan(
+                text: 'Not a user Yet? ',
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 17),
+                children: [
+                  TextSpan(
+                      text: 'Sign up',
+                      style: TextStyle(color: Colors.blue[900]),
+                      recognizer: _signUpRecognizer)
+                ],
+              ),
+            )
           ],
         ),
       ),
