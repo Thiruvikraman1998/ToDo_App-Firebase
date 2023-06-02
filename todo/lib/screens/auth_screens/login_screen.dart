@@ -34,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     _signUpRecognizer.onTap = () {
+      Navigator.pushNamed(context, '/signup');
       print("Sign Up clicked");
     };
     super.initState();
