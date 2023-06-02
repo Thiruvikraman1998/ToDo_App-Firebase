@@ -36,7 +36,7 @@ class FirebaseServices {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       if (_auth.currentUser != null) {
-        Navigator.pushNamed(context, '/home');
+        Navigator.popAndPushNamed(context, '/home');
       }
       print(_auth.currentUser!.email);
     } on FirebaseAuthException catch (e) {
