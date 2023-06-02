@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/screens/auth_screens/login_screen.dart';
 import 'package:todo/screens/auth_screens/sign_up_screen.dart';
+import 'package:todo/screens/other_screens/home_screen.dart';
 
 import 'screens/other_screens/onboarding_screen.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => OnBoardingScreen(),
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignUp(),
+        '/home': (context) => HomeScreen(),
       },
     );
   }

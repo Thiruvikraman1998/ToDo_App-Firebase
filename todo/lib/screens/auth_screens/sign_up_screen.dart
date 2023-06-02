@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:todo/services/firebase_services.dart';
 
 import '../../utils/app_layout.dart';
 
@@ -46,6 +49,15 @@ class _SignUpState extends State<SignUp> {
     _passwordController.dispose();
     _phoneNumberController.dispose();
     super.dispose();
+  }
+
+  void signUpUser() async {
+    await FirebaseServices(FirebaseAuth.instance, FirebaseFirestore.instance)
+        .signUpWithEmail(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+            phoneNumber: _phoneNumberController.text.trim(),
+            context: context);
   }
 
   @override
@@ -149,9 +161,9 @@ class _SignUpState extends State<SignUp> {
                     borderRadius: BorderRadius.circular(50),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: signUpUser,
                 child: const Text(
-                  "Login",
+                  "Register",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
