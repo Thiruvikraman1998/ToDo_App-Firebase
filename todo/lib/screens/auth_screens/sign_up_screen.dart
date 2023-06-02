@@ -28,6 +28,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
   final TapGestureRecognizer _loginRecognizer = TapGestureRecognizer();
 
   bool isPasswordVisible = false;
@@ -48,12 +49,15 @@ class _SignUpState extends State<SignUp> {
     _emailController.dispose();
     _passwordController.dispose();
     _phoneNumberController.dispose();
+    _userNameController.dispose();
+    _loginRecognizer.dispose();
     super.dispose();
   }
 
   void signUpUser() async {
     await FirebaseServices(FirebaseAuth.instance, FirebaseFirestore.instance)
         .signUpWithEmail(
+            userName: _userNameController.text.trim(),
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
             phoneNumber: _phoneNumberController.text.trim(),
@@ -87,6 +91,22 @@ class _SignUpState extends State<SignUp> {
               ],
             ),
             const Gap(40),
+
+            // User name
+            Container(
+              padding: EdgeInsets.only(left: width(20)),
+              height: height(50),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(height(25))),
+              child: TextField(
+                controller: _userNameController,
+                decoration: const InputDecoration(
+                    hintText: "User Name", border: InputBorder.none),
+              ),
+            ),
+            const Gap(20),
 
             //Email / ph no
             Container(
