@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/services/firebase_services.dart';
 import 'package:todo/utils/app_layout.dart';
 
@@ -37,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     _signUpRecognizer.onTap = () {
-      Navigator.pushNamed(context, '/signup');
+      Navigator.popAndPushNamed(context, '/signup');
       print("Sign Up clicked");
     };
     super.initState();
@@ -49,14 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
     _signUpRecognizer.dispose();
     super.dispose();
-  }
-
-  void loginWithEmail() async {
-    await FirebaseServices(FirebaseAuth.instance, FirebaseFirestore.instance)
-        .loginWithEmail(
-            email: _emailOrPhoneController.text.trim(),
-            password: _passwordController.text.trim(),
-            context: context);
   }
 
   @override
@@ -166,7 +156,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(50),
                   ),
                 ),
-                onPressed: loginWithEmail,
+                onPressed: () {
+                  context.read<FirebaseServices>().loginWithEmail(
+                      email: _emailOrPhoneController.text.trim(),
+                      password: _passwordController.text.trim(),
+                      context: context);
+                },
                 child: const Text(
                   "Login",
                   style: TextStyle(

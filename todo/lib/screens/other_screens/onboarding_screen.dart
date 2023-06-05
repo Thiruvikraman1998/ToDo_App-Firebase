@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/auth_wraper.dart';
 import 'package:todo/utils/app_layout.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -27,7 +28,7 @@ class OnBoardingScreen extends StatelessWidget {
           extendedPadding:
               EdgeInsets.symmetric(horizontal: AppLayout.getWidth(120)),
           onPressed: () {
-            Navigator.pushNamed(context, '/login');
+            Navigator.popAndPushNamed(context, '/auth');
           },
           label: const Text(
             "Get Started",

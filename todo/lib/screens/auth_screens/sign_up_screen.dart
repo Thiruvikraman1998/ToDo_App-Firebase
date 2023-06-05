@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/services/firebase_services.dart';
 
 import '../../utils/app_layout.dart';
@@ -38,7 +37,7 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     _loginRecognizer.onTap = () {
-      Navigator.pushNamed(context, '/login');
+      Navigator.popAndPushNamed(context, '/login');
       print("Login tapped");
     };
     super.initState();
@@ -52,16 +51,6 @@ class _SignUpState extends State<SignUp> {
     _userNameController.dispose();
     _loginRecognizer.dispose();
     super.dispose();
-  }
-
-  void signUpUser() async {
-    await FirebaseServices(FirebaseAuth.instance, FirebaseFirestore.instance)
-        .signUpWithEmail(
-            userName: _userNameController.text.trim(),
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim(),
-            phoneNumber: _phoneNumberController.text.trim(),
-            context: context);
   }
 
   @override
@@ -153,22 +142,6 @@ class _SignUpState extends State<SignUp> {
                     suffixIconColor: Colors.grey),
               ),
             ),
-            const Gap(20),
-
-            // Phone number
-            Container(
-              padding: EdgeInsets.only(left: width(20)),
-              height: height(50),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(height(25))),
-              child: TextField(
-                controller: _phoneNumberController,
-                decoration: const InputDecoration(
-                    hintText: "Phone Number", border: InputBorder.none),
-              ),
-            ),
             const Gap(40),
 
             // Login button
@@ -181,7 +154,14 @@ class _SignUpState extends State<SignUp> {
                     borderRadius: BorderRadius.circular(50),
                   ),
                 ),
-                onPressed: signUpUser,
+                onPressed: () {
+                  context.read<FirebaseServices>().signUpWithEmail(
+                      userName: _userNameController.text.trim(),
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim(),
+                      phoneNumber: _phoneNumberController.text.trim(),
+                      context: context);
+                },
                 child: const Text(
                   "Register",
                   style: TextStyle(
@@ -231,7 +211,7 @@ class _SignUpState extends State<SignUp> {
                   ),
               ],
             ),
-            const Gap(90),
+            const Gap(70),
 
             // Already a user...?
             RichText(

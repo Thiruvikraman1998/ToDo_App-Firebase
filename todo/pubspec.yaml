@@ -40,6 +40,8 @@ dependencies:
   cloud_firestore: ^4.8.0
   get: ^4.6.5
   gap: ^3.0.0
+  pinput: ^2.2.31
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
