@@ -19,6 +19,7 @@ class FirebaseServices {
           email: email, password: password);
       await _auth.currentUser!.updateDisplayName(userName);
       print(_auth.currentUser!.displayName);
+      await sendEmailVerification(context);
       // try {
       //   if (_auth.currentUser != null) {
       //     await _firebaseFirestore
@@ -38,10 +39,26 @@ class FirebaseServices {
       {required email, required password, required context}) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      if (_auth.currentUser != null) {
+      if (_auth.currentUser != null && _auth.currentUser!.emailVerified) {
         Navigator.popAndPushNamed(context, '/home');
+      } else if (_auth.currentUser == null) {
+        showSnackBar(context, 'User not registered');
+      } else if (!_auth.currentUser!.emailVerified) {
+        showSnackBar(
+            context, "Email not yet verified, verify email and try again");
       }
       print(_auth.currentUser!.email);
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!);
+      print(e.message);
+    }
+  }
+
+  // context inside the methods are used to get the buildcontext and dsiplay a snackbor or dialog or any others.
+  Future<void> sendEmailVerification(BuildContext context) async {
+    try {
+      _auth.currentUser!.sendEmailVerification();
+      showSnackBar(context, "An email has been sent to your register mail id");
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
     }
