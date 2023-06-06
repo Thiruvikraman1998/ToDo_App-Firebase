@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 
@@ -17,7 +18,7 @@ class CompletedTodo extends StatelessWidget {
       ),
       color: AppColorsLight.mediumPriority,
       child: Container(
-        height: AppLayout.getHeight(140),
+        height: AppLayout.getHeight(150),
         width: double.infinity,
         margin: EdgeInsets.only(left: AppLayout.getWidth(12)),
         decoration: const BoxDecoration(
@@ -28,6 +29,7 @@ class CompletedTodo extends StatelessWidget {
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
               title: const Text(
@@ -49,6 +51,16 @@ class CompletedTodo extends StatelessWidget {
                     shape: const CircleBorder(),
                     value: true,
                     onChanged: (value) {}),
+              ),
+            ),
+            const Gap(10),
+            const Divider(height: 3, indent: 20, endIndent: 20),
+            const Gap(10),
+            Padding(
+              padding: EdgeInsets.only(left: AppLayout.getWidth(20)),
+              child: const Text(
+                "Today, 11.30 PM",
+                style: TextStyle(fontSize: 17),
               ),
             )
           ],
