@@ -3,13 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/models/settings_enum.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 import 'package:todo/widgets/reusable/active_todo_cards.dart';
 import 'package:todo/widgets/reusable/completed__todo.dart';
 
 import '../../services/firebase_services.dart';
-import '../../widgets/active_todo.dart';
+import '../../widgets/popupmenu.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,7 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsLight.scaffoldBackgroundColor,
-      body: Stack(
+      body:
+          // used stack to have a container with opacity in the bottom that looks like faded from bottom.
+          Stack(
         children: [
           Positioned.fill(
             child: CustomScrollView(
@@ -75,12 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           const Spacer(),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.more_vert_rounded,
-                            ),
-                          )
+                          const PopupMenuTheme(
+                            data: PopupMenuThemeData(
+                                surfaceTintColor:
+                                    AppColorsLight.scaffoldBackgroundColor),
+                            child: PopUpMenuAction(),
+                          ),
                         ],
                       ),
                     ),

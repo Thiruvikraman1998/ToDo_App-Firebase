@@ -20,7 +20,9 @@ class CompletedTodo extends StatelessWidget {
       child: Container(
         height: AppLayout.getHeight(150),
         width: double.infinity,
-        margin: EdgeInsets.only(left: AppLayout.getWidth(12)),
+        margin: EdgeInsets.only(
+          left: AppLayout.getWidth(11),
+        ),
         decoration: const BoxDecoration(
           color: AppColorsLight.backgroundColor,
           borderRadius: BorderRadius.only(
