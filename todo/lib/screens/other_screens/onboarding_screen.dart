@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -24,6 +25,8 @@ class OnBoardingScreen extends StatelessWidget {
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: AppLayout.getHeight(50)),
         child: FloatingActionButton.extended(
+          backgroundColor: AppColorsLight.buttonColor,
+          foregroundColor: AppColorsLight.backgroundColor,
           extendedPadding:
               EdgeInsets.symmetric(horizontal: AppLayout.getWidth(120)),
           onPressed: () {
