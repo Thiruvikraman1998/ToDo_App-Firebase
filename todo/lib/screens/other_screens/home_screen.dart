@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 import 'package:todo/widgets/reusable/active_todo_cards.dart';
+import 'package:todo/widgets/reusable/completed__todo.dart';
 
 import '../../services/firebase_services.dart';
 import '../../widgets/active_todo.dart';
@@ -123,7 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ],
                   ),
-                  const Gap(15),
                 ],
               ),
             ),
@@ -139,23 +139,68 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: Container(
+              margin: EdgeInsets.only(
+                left: AppLayout.getWidth(12),
+                right: AppLayout.getWidth(12),
+                top: AppLayout.getHeight(20),
+                bottom: AppLayout.getHeight(5),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        "Completed",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: () {},
+                        style: const ButtonStyle(
+                          foregroundColor: MaterialStatePropertyAll(
+                              AppColorsLight.buttonColor),
+                        ),
+                        child: const Text(
+                          "View more",
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      )
+                    ],
+                  ),
+                  const Gap(10),
+                ],
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              childCount: 10,
+              (context, index) => const CompletedTodo(),
+            ),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-          icon: const Icon(
-            Icons.add,
-            size: 28,
-          ),
-          backgroundColor: AppColorsLight.buttonColor,
-          foregroundColor: AppColorsLight.backgroundColor,
-          elevation: 0.0,
-          extendedPadding:
-              EdgeInsets.symmetric(horizontal: AppLayout.getWidth(100)),
-          onPressed: () {},
-          label: const Text(
-            "Create New",
-            style: TextStyle(fontSize: 20),
-          )),
+        icon: const Icon(
+          Icons.add,
+          size: 28,
+        ),
+        backgroundColor: AppColorsLight.buttonColor,
+        foregroundColor: AppColorsLight.backgroundColor,
+        elevation: 0.0,
+        extendedPadding:
+            EdgeInsets.symmetric(horizontal: AppLayout.getWidth(100)),
+        onPressed: () {},
+        label: const Text(
+          "Create New",
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

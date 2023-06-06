@@ -12,9 +12,9 @@ class ActiveTodoCard extends StatefulWidget {
 }
 
 class _ActiveTodoCardState extends State<ActiveTodoCard> {
+  bool isCompleted = false;
   @override
   Widget build(BuildContext context) {
-    bool isCompleted = true;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
       color: AppColorsLight.highPriority,
@@ -40,14 +40,17 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
               trailing: Transform.scale(
                 scale: 1.3,
                 child: CupertinoCheckbox(
-                    activeColor: AppColorsLight.buttonColor,
-                    shape: const CircleBorder(),
-                    value: isCompleted,
-                    onChanged: (value) {
-                      setState(() {
+                  activeColor: AppColorsLight.buttonColor,
+                  shape: const CircleBorder(),
+                  value: isCompleted,
+                  onChanged: (value) {
+                    setState(
+                      () {
                         isCompleted = value!;
-                      });
-                    }),
+                      },
+                    );
+                  },
+                ),
               ),
             ),
             const Gap(10),
@@ -55,6 +58,22 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
               height: AppLayout.getHeight(8),
               indent: 22,
               endIndent: 22,
+            ),
+            const Gap(10),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(15)),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Description :"),
+                  Gap(5),
+                  Text(
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              ),
             )
           ],
         ),
