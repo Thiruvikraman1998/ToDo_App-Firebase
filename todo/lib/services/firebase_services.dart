@@ -49,6 +49,7 @@ class FirebaseServices {
       } else if (_auth.currentUser == null) {
         showSnackBar(context, 'User not registered');
       } else if (!_auth.currentUser!.emailVerified) {
+        await _auth.currentUser!.sendEmailVerification();
         showSnackBar(
             context, "Email not yet verified, verify email and try again");
       }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo/auth_wraper.dart';
 import 'package:todo/utils/app_layout.dart';
 
 class OnBoardingScreen extends StatelessWidget {

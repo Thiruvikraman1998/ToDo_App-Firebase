@@ -36,6 +36,7 @@ class TodoApp extends StatelessWidget {
             initialData: null)
       ],
       child: MaterialApp(
+        theme: ThemeData(useMaterial3: true),
         debugShowCheckedModeBanner: false,
         title: 'ToDo App',
         home: const OnBoardingScreen(),

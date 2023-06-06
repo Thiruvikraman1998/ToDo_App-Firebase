@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/services/firebase_services.dart';
+import 'package:todo/utils/app_colors.dart';
 
 import '../../utils/app_layout.dart';
 
@@ -150,6 +151,7 @@ class _SignUpState extends State<SignUp> {
               width: width(250),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColorsLight.buttonColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -224,7 +226,7 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   TextSpan(
                       text: 'Log in',
-                      style: TextStyle(color: Colors.blue[900]),
+                      style: const TextStyle(color: AppColorsLight.buttonColor),
                       recognizer: _loginRecognizer)
                 ],
               ),

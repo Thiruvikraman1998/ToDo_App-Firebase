@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/services/firebase_services.dart';
+import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -152,6 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: width(250),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColorsLight.buttonColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -224,7 +226,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   TextSpan(
                       text: 'Sign up',
-                      style: TextStyle(color: Colors.blue[900], fontSize: 18),
+                      style: const TextStyle(
+                          color: AppColorsLight.buttonColor, fontSize: 18),
                       recognizer: _signUpRecognizer)
                 ],
               ),
