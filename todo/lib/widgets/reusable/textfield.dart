@@ -5,7 +5,13 @@ import 'package:todo/utils/app_layout.dart';
 
 class TextInputfield extends StatefulWidget {
   final int maxlines;
-  const TextInputfield({super.key, required this.maxlines});
+  final double height;
+  final String hintText;
+  const TextInputfield(
+      {super.key,
+      required this.maxlines,
+      required this.height,
+      required this.hintText});
 
   @override
   State<TextInputfield> createState() => _TextInputfieldState();
@@ -17,14 +23,14 @@ class _TextInputfieldState extends State<TextInputfield> {
     return Container(
       padding: EdgeInsets.symmetric(
           vertical: AppLayout.getHeight(5), horizontal: AppLayout.getWidth(20)),
-      height: AppLayout.getHeight(55),
+      height: AppLayout.getHeight(widget.height),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: AppColorsLight.greyColor),
-      child: const TextField(
-        maxLines: 1,
+      child: TextField(
+        maxLines: widget.maxlines,
         decoration: InputDecoration(
-            hintText: "Add Task Name..", border: InputBorder.none),
+            hintText: widget.hintText, border: InputBorder.none),
       ),
     );
   }
