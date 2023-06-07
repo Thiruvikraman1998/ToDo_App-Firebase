@@ -4,7 +4,8 @@ import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 
 class TextInputfield extends StatefulWidget {
-  const TextInputfield({super.key});
+  final int maxlines;
+  const TextInputfield({super.key, required this.maxlines});
 
   @override
   State<TextInputfield> createState() => _TextInputfieldState();
@@ -20,7 +21,8 @@ class _TextInputfieldState extends State<TextInputfield> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: AppColorsLight.greyColor),
-      child: TextField(
+      child: const TextField(
+        maxLines: 1,
         decoration: InputDecoration(
             hintText: "Add Task Name..", border: InputBorder.none),
       ),

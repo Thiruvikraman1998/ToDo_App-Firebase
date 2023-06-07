@@ -234,6 +234,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _openInputModal() {
     showModalBottomSheet(
+        isScrollControlled: true,
+        showDragHandle: true,
+        backgroundColor: AppColorsLight.backgroundColor,
         context: context,
         builder: (bottomSheetContext) {
           return const TaskInputModal();
