@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:todo/models/settings_enum.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
+import 'package:todo/widgets/input_modal.dart';
 import 'package:todo/widgets/reusable/active_todo_cards.dart';
 import 'package:todo/widgets/reusable/completed__todo.dart';
 
@@ -221,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0.0,
         extendedPadding:
             EdgeInsets.symmetric(horizontal: AppLayout.getWidth(100)),
-        onPressed: () {},
+        onPressed: _openInputModal,
         label: const Text(
           "Create New",
           style: TextStyle(fontSize: 20),
@@ -229,5 +230,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  void _openInputModal() {
+    showModalBottomSheet(
+        context: context,
+        builder: (bottomSheetContext) {
+          return const TaskInputModal();
+        },
+        enableDrag: true);
   }
 }
