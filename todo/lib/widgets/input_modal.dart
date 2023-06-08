@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,8 @@ import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 import 'package:todo/widgets/reusable/input_action_button.dart';
 import 'package:todo/widgets/reusable/textfield.dart';
+
+import '../models/todo.dart';
 
 class TaskInputModal extends StatefulWidget {
   const TaskInputModal({super.key});
@@ -17,8 +20,7 @@ class TaskInputModal extends StatefulWidget {
 }
 
 class _TaskInputModalState extends State<TaskInputModal> {
-  final List priorities = ["High", "Medium", "Low"];
-  int _choideIndex = 0;
+  Priorities _selectedPriority = Priorities.high;
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -74,28 +76,51 @@ class _TaskInputModalState extends State<TaskInputModal> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ...priorities.map(
-                  (priority) {
-                    int index = priorities.indexOf(priority);
-                    return ChoiceChip(
-                      //labelPadding: EdgeInsets.all(10),
-                      padding: EdgeInsets.symmetric(
-                          vertical: AppLayout.getHeight(10),
-                          horizontal: AppLayout.getWidth(15)),
-                      label: Text(
-                        priority,
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      selected: _choideIndex == index,
-                      selectedColor: AppColorsLight.buttonColor,
-                      onSelected: (selected) {
-                        setState(() {
-                          _choideIndex = selected ? index : 0;
-                        });
-                      },
-                    );
+                ChoiceChip(
+                  //labelPadding: EdgeInsets.all(10),
+                  padding: EdgeInsets.symmetric(
+                      vertical: AppLayout.getHeight(10),
+                      horizontal: AppLayout.getWidth(15)),
+                  label: const Text(
+                    "High",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  selected: _selectedPriority == Priorities.high,
+                  selectedColor: AppColorsLight.buttonColor,
+                  onSelected: (selected) {
+                    _handleSelectedPriority(Priorities.high);
                   },
-                )
+                ),
+                ChoiceChip(
+                  //labelPadding: EdgeInsets.all(10),
+                  padding: EdgeInsets.symmetric(
+                      vertical: AppLayout.getHeight(10),
+                      horizontal: AppLayout.getWidth(15)),
+                  label: const Text(
+                    "Medium",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  selected: _selectedPriority == Priorities.medium,
+                  selectedColor: AppColorsLight.buttonColor,
+                  onSelected: (selected) {
+                    _handleSelectedPriority(Priorities.medium);
+                  },
+                ),
+                ChoiceChip(
+                  //labelPadding: EdgeInsets.all(10),
+                  padding: EdgeInsets.symmetric(
+                      vertical: AppLayout.getHeight(10),
+                      horizontal: AppLayout.getWidth(15)),
+                  label: const Text(
+                    "Low",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  selected: _selectedPriority == Priorities.low,
+                  selectedColor: AppColorsLight.buttonColor,
+                  onSelected: (selected) {
+                    _handleSelectedPriority(Priorities.low);
+                  },
+                ),
               ],
             ),
           ),
@@ -217,6 +242,12 @@ class _TaskInputModalState extends State<TaskInputModal> {
         ],
       ),
     );
+  }
+
+  void _handleSelectedPriority(Priorities priorities) {
+    setState(() {
+      _selectedPriority = priorities;
+    });
   }
 
   void _openDatePicker() async {

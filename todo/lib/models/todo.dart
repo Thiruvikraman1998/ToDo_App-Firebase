@@ -6,6 +6,8 @@ final formattedTime = DateFormat('HH:mm').format(currentTime);
 
 final formattedDate = DateFormat.yMd();
 
+enum Priorities { high, medium, low }
+
 class Todo {
   String? title;
   String? description;
