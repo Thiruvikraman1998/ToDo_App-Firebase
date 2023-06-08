@@ -7,14 +7,17 @@ class InputActionButton extends StatelessWidget {
   final String label;
   final Color bgColor;
   final Color fgColor;
+  final VoidCallback test;
   const InputActionButton(
       {super.key,
       required this.label,
       required this.bgColor,
-      required this.fgColor});
+      required this.fgColor,
+      required this.test});
 
   @override
   Widget build(BuildContext context) {
+    final time;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         foregroundColor: fgColor,
@@ -28,7 +31,7 @@ class InputActionButton extends StatelessWidget {
           AppLayout.getHeight(55),
         ),
       ),
-      onPressed: () {},
+      onPressed: test,
       child: Text(label),
     );
   }

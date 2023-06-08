@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/settings_enum.dart';
+import 'package:todo/models/todo.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 import 'package:todo/widgets/input_modal.dart';
@@ -21,6 +22,50 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final List<Todo> todo = [
+    Todo(
+        "Meeting",
+        "Need to meet Mr. mohan and should talk to him regarding the business",
+        DateTime.now(),
+        TimeOfDay.now(),
+        1,
+        false),
+    Todo(
+        "Meeting",
+        "Need to meet Mr. mohan and should talk to him regarding the business",
+        DateTime.now(),
+        TimeOfDay.now(),
+        2,
+        false),
+    Todo(
+        "Meeting",
+        "Need to meet Mr. mohan and should talk to him regarding the business",
+        DateTime.now(),
+        TimeOfDay.now(),
+        3,
+        false),
+    Todo(
+        "Meeting",
+        "Need to meet Mr. mohan and should talk to him regarding the business",
+        DateTime.now(),
+        TimeOfDay.now(),
+        2,
+        false),
+    Todo(
+        "Meeting",
+        "Need to meet Mr. mohan and should talk to him regarding the business",
+        DateTime.now(),
+        TimeOfDay.now(),
+        3,
+        false),
+    Todo(
+        "Meeting",
+        "Need to meet Mr. mohan and should talk to him regarding the business",
+        DateTime.now(),
+        TimeOfDay.now(),
+        1,
+        false)
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.black),
                                 children: [
                                   TextSpan(
-                                    text: "(10)",
+                                    text: "(${todo.length})",
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.grey[600],
@@ -142,8 +187,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: AppLayout.getHeight(200),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 10,
-                      itemBuilder: (context, index) => ActiveTodoCard(),
+                      itemCount: todo.length,
+                      itemBuilder: (context, index) =>
+                          ActiveTodoCard(todo: todo[index]),
                     ),
                   ),
                 ),

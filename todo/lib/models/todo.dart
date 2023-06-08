@@ -1,9 +1,19 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+final currentTime = DateTime.now();
+final formattedTime = DateFormat('HH:mm').format(currentTime);
+
+final formattedDate = DateFormat.yMd();
+
 class Todo {
   String? title;
   String? description;
   DateTime? date;
-  DateTime? time;
-  bool? priority;
+  TimeOfDay? time;
+  int? priority;
+  bool? isCompleted;
 
-  Todo(this.title, this.description, this.date, this.time, this.priority);
+  Todo(this.title, this.description, this.date, this.time, this.priority,
+      this.isCompleted);
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:todo/models/todo.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 
 class ActiveTodoCard extends StatefulWidget {
-  const ActiveTodoCard({super.key});
+  final Todo todo;
+  const ActiveTodoCard({super.key, required this.todo});
 
   @override
   State<ActiveTodoCard> createState() => _ActiveTodoCardState();
@@ -17,7 +19,13 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
-      color: AppColorsLight.highPriority,
+      color: widget.todo.priority == 1
+          ? AppColorsLight.highPriority
+          : widget.todo.priority == 2
+              ? AppColorsLight.mediumPriority
+              : widget.todo.priority == 3
+                  ? AppColorsLight.lowPriority
+                  : null,
       child: Container(
         margin: EdgeInsets.only(bottom: AppLayout.getHeight(10)),
         padding: EdgeInsets.all(AppLayout.getHeight(5)),
@@ -33,10 +41,10 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
         child: Column(
           children: [
             ListTile(
-              title: const Text('Title',
-                  style: TextStyle(fontSize: 20, color: Colors.black)),
-              subtitle: const Text('Friday, 08 July 2022',
-                  style: TextStyle(fontSize: 17, color: Colors.black)),
+              title: Text(widget.todo.title!,
+                  style: const TextStyle(fontSize: 20, color: Colors.black)),
+              subtitle: Text(widget.todo.date.toString(),
+                  style: const TextStyle(fontSize: 17, color: Colors.black)),
               trailing: Transform.scale(
                 scale: 1.3,
                 child: CupertinoCheckbox(
@@ -62,13 +70,13 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
             const Gap(10),
             Container(
               margin: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(15)),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Description :"),
-                  Gap(5),
+                  const Text("Description :"),
+                  const Gap(5),
                   Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    widget.todo.description!,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   )
