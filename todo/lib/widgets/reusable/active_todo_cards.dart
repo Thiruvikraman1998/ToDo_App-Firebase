@@ -19,11 +19,11 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
-      color: widget.todo.priority == 1
+      color: widget.todo.priority == Priorities.high.toString()
           ? AppColorsLight.highPriority
-          : widget.todo.priority == 2
+          : widget.todo.priority == Priorities.medium.toString()
               ? AppColorsLight.mediumPriority
-              : widget.todo.priority == 3
+              : widget.todo.priority == Priorities.low.toString()
                   ? AppColorsLight.lowPriority
                   : null,
       child: Container(
@@ -39,6 +39,7 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
               title: Text(widget.todo.title!,

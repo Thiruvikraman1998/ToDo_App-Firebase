@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,8 @@ import 'package:todo/widgets/reusable/textfield.dart';
 import '../models/todo.dart';
 
 class TaskInputModal extends StatefulWidget {
-  const TaskInputModal({super.key});
+  final void Function(Todo todo) saveTodo;
+  const TaskInputModal({super.key, required this.saveTodo});
 
   @override
   State<TaskInputModal> createState() => _TaskInputModalState();
@@ -27,6 +30,13 @@ class _TaskInputModalState extends State<TaskInputModal> {
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
   final formattedDates = DateFormat('dd/MM/yyyy');
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +245,7 @@ class _TaskInputModalState extends State<TaskInputModal> {
                 label: "Create",
                 bgColor: AppColorsLight.buttonColor,
                 fgColor: AppColorsLight.backgroundColor,
-                test: () {},
+                test: _validateSubmission,
               ),
             ],
           )
@@ -272,5 +282,50 @@ class _TaskInputModalState extends State<TaskInputModal> {
     setState(() {
       _selectedTime = pickedTime;
     });
+  }
+
+  void _validateSubmission() {
+    if (_titleController.text.isEmpty ||
+        _descriptionController.text.isEmpty ||
+        _selectedDate == null ||
+        _selectedTime == null) {
+      showDialog(
+        context: context,
+        builder: (dialogBoxContext) {
+          return AlertDialog(
+            title: const Text("Invalid Inputs"),
+            content: _titleController.text.isEmpty
+                ? const Text("Title is empty, enter a title")
+                : _descriptionController.text.isEmpty
+                    ? const Text("Description is Empty")
+                    : _selectedDate == null
+                        ? const Text("Date is not selected, select a date")
+                        : _selectedTime == null
+                            ? const Text("Time is not selected, select a time")
+                            : null,
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(dialogBoxContext);
+                },
+                child: const Text('Okay'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+    widget.saveTodo(
+      Todo(_titleController.text, _descriptionController.text, _selectedDate,
+          _selectedTime, _selectedPriority.toString(), false),
+    );
+    setState(() {
+      _titleController.text = '';
+      _descriptionController.text = '';
+      _selectedDate = null;
+      _selectedTime = null;
+    });
+    Navigator.pop(context);
   }
 }

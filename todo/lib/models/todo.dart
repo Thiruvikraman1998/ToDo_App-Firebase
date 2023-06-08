@@ -13,7 +13,7 @@ class Todo {
   String? description;
   DateTime? date;
   TimeOfDay? time;
-  int? priority;
+  String? priority;
   bool? isCompleted;
 
   Todo(this.title, this.description, this.date, this.time, this.priority,

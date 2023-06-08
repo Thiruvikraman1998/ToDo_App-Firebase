@@ -23,50 +23,51 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Todo> todo = [
-    Todo(
-        "Meeting",
-        "Need to meet Mr. mohan and should talk to him regarding the business",
-        DateTime.utc(2023),
-        TimeOfDay.now(),
-        1,
-        false),
-    Todo(
-        "Meeting",
-        "Need to meet Mr. mohan and should talk to him regarding the business",
-        DateTime.utc(2023),
-        TimeOfDay.now(),
-        2,
-        false),
-    Todo(
-        "Meeting",
-        "Need to meet Mr. mohan and should talk to him regarding the business",
-        DateTime.utc(2023),
-        TimeOfDay.now(),
-        3,
-        false),
-    Todo(
-        "Meeting",
-        "Need to meet Mr. mohan and should talk to him regarding the business",
-        DateTime.utc(2023),
-        TimeOfDay.now(),
-        2,
-        false),
-    Todo(
-        "Meeting",
-        "Need to meet Mr. mohan and should talk to him regarding the business",
-        DateTime.utc(2023),
-        TimeOfDay.now(),
-        3,
-        false),
-    Todo(
-        "Meeting",
-        "Need to meet Mr. mohan and should talk to him regarding the business",
-        DateTime.utc(2023),
-        TimeOfDay.now(),
-        1,
-        false)
+  final List<Todo> todoList = [
+    // Todo(
+    //     "Meeting",
+    //     "Need to meet Mr. mohan and should talk to him regarding the business",
+    //     DateTime.utc(2023),
+    //     TimeOfDay.now(),
+    //     1,
+    //     false),
+    // Todo(
+    //     "Meeting",
+    //     "Need to meet Mr. mohan and should talk to him regarding the business",
+    //     DateTime.utc(2023),
+    //     TimeOfDay.now(),
+    //     2,
+    //     false),
+    // Todo(
+    //     "Meeting",
+    //     "Need to meet Mr. mohan and should talk to him regarding the business",
+    //     DateTime.utc(2023),
+    //     TimeOfDay.now(),
+    //     3,
+    //     false),
+    // Todo(
+    //     "Meeting",
+    //     "Need to meet Mr. mohan and should talk to him regarding the business",
+    //     DateTime.utc(2023),
+    //     TimeOfDay.now(),
+    //     2,
+    //     false),
+    // Todo(
+    //     "Meeting",
+    //     "Need to meet Mr. mohan and should talk to him regarding the business",
+    //     DateTime.utc(2023),
+    //     TimeOfDay.now(),
+    //     3,
+    //     false),
+    // Todo(
+    //     "Meeting",
+    //     "Need to meet Mr. mohan and should talk to him regarding the business",
+    //     DateTime.utc(2023),
+    //     TimeOfDay.now(),
+    //     1,
+    //     false)
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.black),
                                 children: [
                                   TextSpan(
-                                    text: "(${todo.length})",
+                                    text: "(${todoList.length})",
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.grey[600],
@@ -188,9 +189,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: AppLayout.getHeight(200),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: todo.length,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: todoList.length,
                       itemBuilder: (context, index) =>
-                          ActiveTodoCard(todo: todo[index]),
+                          ActiveTodoCard(todo: todoList[index]),
                     ),
                   ),
                 ),
@@ -286,8 +288,16 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColorsLight.backgroundColor,
         context: context,
         builder: (bottomSheetContext) {
-          return const TaskInputModal();
+          return TaskInputModal(
+            saveTodo: _addTodo,
+          );
         },
         enableDrag: true);
+  }
+
+  void _addTodo(Todo todo) {
+    setState(() {
+      todoList.add(todo);
+    });
   }
 }
