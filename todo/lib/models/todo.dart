@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -34,5 +35,21 @@ class Todo {
     }
     map['isCompleted'] = isCompleted;
     return map;
+  }
+
+  Todo.fromMap(Map<String, dynamic> map) {
+    title = map['title'];
+    description = map['description'];
+    date = (map['date'] as Timestamp).toDate();
+    time = (map['time'] as Timestamp).toDate();
+    int priorityValue = map['priority'];
+    if (priorityValue == 1) {
+      priority = Priorities.high.toString();
+    } else if (priorityValue == 2) {
+      priority = Priorities.medium.toString();
+    } else {
+      priority = Priorities.low.toString();
+    }
+    isCompleted = map['isCompleted'];
   }
 }

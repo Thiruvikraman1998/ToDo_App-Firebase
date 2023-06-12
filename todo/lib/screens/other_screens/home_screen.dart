@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String uid = '';
+
+  @override
+  void initState() {
+    getUid();
+    super.initState();
+  }
+
+  void getUid() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    final user = await auth.currentUser!;
+    setState(() {
+      uid = user.uid;
+    });
+  }
+
   final List<Todo> todoList = [
     // Todo(
     //     "Meeting",
@@ -186,16 +203,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SliverToBoxAdapter(
                   child: Container(
-                    margin: EdgeInsets.only(left: AppLayout.getWidth(10)),
-                    height: size.height * 0.25,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      physics: BouncingScrollPhysics(),
-                      itemCount: todoList.length,
-                      itemBuilder: (context, index) =>
-                          ActiveTodoCard(todo: todoList[index]),
-                    ),
-                  ),
+                      margin: EdgeInsets.only(left: AppLayout.getWidth(10)),
+                      height: size.height * 0.25,
+                      child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('user')
+                            .doc(uid)
+                            .collection('task')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CupertinoActivityIndicator(),
+                            );
+                          } else {
+                            List<Todo> todo = snapshot.data!.docs.map((doc) {
+                              return Todo.fromMap(doc.data());
+                            }).toList();
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: BouncingScrollPhysics(),
+                              itemCount: todo.length,
+                              itemBuilder: (context, index) =>
+                                  ActiveTodoCard(todo: todo[index]),
+                            );
+                          }
+                        },
+                      )),
                 ),
                 SliverToBoxAdapter(
                   child: Container(
