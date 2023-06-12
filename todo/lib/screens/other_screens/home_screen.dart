@@ -34,56 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void getUid() async {
     FirebaseAuth auth = FirebaseAuth.instance;
-    final user = await auth.currentUser!;
+    final user = auth.currentUser;
     setState(() {
-      uid = user.uid;
+      uid = user!.uid;
     });
   }
-
-  final List<Todo> todoList = [
-    // Todo(
-    //     "Meeting",
-    //     "Need to meet Mr. mohan and should talk to him regarding the business",
-    //     DateTime.utc(2023),
-    //     TimeOfDay.now(),
-    //     "Priorities.high",
-    //     false),
-    // Todo(
-    //     "Meeting",
-    //     "Need to meet Mr. mohan and should talk to him regarding the business",
-    //     DateTime.utc(2023),
-    //     TimeOfDay.now(),
-    //     "Priorities.low",
-    //     false),
-    // Todo(
-    //     "Meeting",
-    //     "Need to meet Mr. mohan and should talk to him regarding the business",
-    //     DateTime.utc(2023),
-    //     TimeOfDay.now(),
-    //     "Priorities.high",
-    //     false),
-    // Todo(
-    //     "Meeting",
-    //     "Need to meet Mr. mohan and should talk to him regarding the business",
-    //     DateTime.utc(2023),
-    //     TimeOfDay.now(),
-    //     "Priorities.medium",
-    //     false),
-    // Todo(
-    //     "Meeting",
-    //     "Need to meet Mr. mohan and should talk to him regarding the business",
-    //     DateTime.utc(2023),
-    //     TimeOfDay.now(),
-    //     "Priorities.low",
-    //     false),
-    // Todo(
-    //     "Meeting",
-    //     "Need to meet Mr. mohan and should talk to him regarding the business",
-    //     DateTime.utc(2023),
-    //     TimeOfDay.now(),
-    //     "Priorities.high",
-    //     false)
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.black),
                                 children: [
                                   TextSpan(
-                                    text: "(${todoList.length})",
+                                    text: "(0)",
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.grey[600],
@@ -225,8 +180,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               scrollDirection: Axis.horizontal,
                               physics: BouncingScrollPhysics(),
                               itemCount: todo.length,
-                              itemBuilder: (context, index) =>
-                                  ActiveTodoCard(todo: todo[index]),
+                              itemBuilder: (context, index) {
+                                if (todo[index].isCompleted == false) {
+                                  return ActiveTodoCard(todo: todo[index]);
+                                } else {
+                                  return null;
+                                }
+                              },
                             );
                           }
                         },
@@ -324,16 +284,8 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColorsLight.backgroundColor,
         context: context,
         builder: (bottomSheetContext) {
-          return TaskInputModal(
-            saveTodo: _addTodo,
-          );
+          return TaskInputModal();
         },
         enableDrag: true);
-  }
-
-  void _addTodo(Todo todo) {
-    setState(() {
-      todoList.add(todo);
-    });
   }
 }

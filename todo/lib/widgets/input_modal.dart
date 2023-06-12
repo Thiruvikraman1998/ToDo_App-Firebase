@@ -17,8 +17,7 @@ import 'package:uuid/uuid.dart';
 import '../models/todo.dart';
 
 class TaskInputModal extends StatefulWidget {
-  final void Function(Todo todo) saveTodo;
-  const TaskInputModal({super.key, required this.saveTodo});
+  const TaskInputModal({super.key});
 
   @override
   State<TaskInputModal> createState() => _TaskInputModalState();
@@ -350,10 +349,6 @@ class _TaskInputModalState extends State<TaskInputModal> {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
-    // widget.saveTodo(
-    //   Todo(_titleController.text, _descriptionController.text, _selectedDate,
-    //       _convertedSelectedTime, _selectedPriority.toString(), false),
-    // );
     debugPrint(
         "${_selectedDate!.toIso8601String()}, ${_selectedTime.toString()}, ${_selectedPriority.toString()}");
     setState(() {
