@@ -17,6 +17,7 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
   bool isCompleted = false;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
       color: widget.todo.priority == Priorities.high.toString()
@@ -29,8 +30,8 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
       child: Container(
         margin: EdgeInsets.only(bottom: AppLayout.getHeight(10)),
         padding: EdgeInsets.all(AppLayout.getHeight(5)),
-        height: AppLayout.getHeight(200),
-        width: AppLayout.getWidth(320),
+        // height: AppLayout.getHeight(200),
+        width: size.width * 0.8,
         decoration: BoxDecoration(
           color: AppColorsLight.backgroundColor,
           borderRadius: BorderRadius.only(

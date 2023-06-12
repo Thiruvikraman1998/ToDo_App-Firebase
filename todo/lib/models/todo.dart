@@ -12,10 +12,27 @@ class Todo {
   String? title;
   String? description;
   DateTime? date;
-  TimeOfDay? time;
+  DateTime? time;
   String? priority;
   bool? isCompleted;
 
   Todo(this.title, this.description, this.date, this.time, this.priority,
       this.isCompleted);
+
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> map = <String, dynamic>{};
+    map['title'] = title;
+    map['description'] = description;
+    map['date'] = date;
+    map['time'] = time;
+    if (priority == Priorities.high.toString()) {
+      map['priority'] = 1;
+    } else if (priority == Priorities.medium.toString()) {
+      map['priority'] = 2;
+    } else {
+      map['priority'] = 3;
+    }
+    map['isCompleted'] = isCompleted;
+    return map;
+  }
 }

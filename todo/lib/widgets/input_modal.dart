@@ -1,16 +1,18 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/services/firebase_services.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
+import 'package:todo/utils/snackbar.dart';
 import 'package:todo/widgets/reusable/input_action_button.dart';
 import 'package:todo/widgets/reusable/textfield.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/todo.dart';
 
@@ -29,7 +31,12 @@ class _TaskInputModalState extends State<TaskInputModal> {
   final TextEditingController _descriptionController = TextEditingController();
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
+  DateTime? _convertedSelectedTime;
   final formattedDates = DateFormat('dd/MM/yyyy');
+
+  // creating unique ids for each task's
+  static const Uuid uuid = Uuid();
+  final taskId = uuid.v4();
 
   @override
   void dispose() {
@@ -238,14 +245,14 @@ class _TaskInputModalState extends State<TaskInputModal> {
                 label: "Cancel",
                 bgColor: AppColorsLight.backgroundColor,
                 fgColor: AppColorsLight.buttonColor,
-                test: () {},
+                onPressed: () {},
               ),
               const Spacer(),
               InputActionButton(
                 label: "Create",
                 bgColor: AppColorsLight.buttonColor,
                 fgColor: AppColorsLight.backgroundColor,
-                test: _validateSubmission,
+                onPressed: _validateSubmission,
               ),
             ],
           )
@@ -279,12 +286,18 @@ class _TaskInputModalState extends State<TaskInputModal> {
     final currentTime = TimeOfDay.now();
     final pickedTime =
         await showTimePicker(context: context, initialTime: currentTime);
+    print(pickedTime);
     setState(() {
       _selectedTime = pickedTime;
+      _convertedSelectedTime = _converTimeOFDayToDateTime(pickedTime!);
     });
   }
 
-  void _validateSubmission() {
+  DateTime _converTimeOFDayToDateTime(TimeOfDay time) {
+    return DateTime(time.hour, time.minute);
+  }
+
+  void _validateSubmission() async {
     if (_titleController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
         _selectedDate == null ||
@@ -316,10 +329,33 @@ class _TaskInputModalState extends State<TaskInputModal> {
       );
       return;
     }
+    FirebaseAuth auth = FirebaseAuth.instance;
+    final user = auth.currentUser;
+    String uid = user!.uid;
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(uid)
+          .collection("task")
+          .doc(taskId)
+          .set(Todo(
+                  _titleController.text.trim(),
+                  _descriptionController.text.trim(),
+                  _selectedDate,
+                  _convertedSelectedTime,
+                  _selectedPriority.toString(),
+                  false)
+              .toMap());
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
     widget.saveTodo(
       Todo(_titleController.text, _descriptionController.text, _selectedDate,
-          _selectedTime, _selectedPriority.toString(), false),
+          _convertedSelectedTime, _selectedPriority.toString(), false),
     );
+    debugPrint(
+        "${_selectedDate!.toIso8601String()}, ${_selectedTime.toString()}, ${_selectedPriority.toString()}");
     setState(() {
       _titleController.text = '';
       _descriptionController.text = '';

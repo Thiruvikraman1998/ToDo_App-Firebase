@@ -29,47 +29,48 @@ class _HomeScreenState extends State<HomeScreen> {
     //     "Need to meet Mr. mohan and should talk to him regarding the business",
     //     DateTime.utc(2023),
     //     TimeOfDay.now(),
-    //     1,
+    //     "Priorities.high",
     //     false),
     // Todo(
     //     "Meeting",
     //     "Need to meet Mr. mohan and should talk to him regarding the business",
     //     DateTime.utc(2023),
     //     TimeOfDay.now(),
-    //     2,
+    //     "Priorities.low",
     //     false),
     // Todo(
     //     "Meeting",
     //     "Need to meet Mr. mohan and should talk to him regarding the business",
     //     DateTime.utc(2023),
     //     TimeOfDay.now(),
-    //     3,
+    //     "Priorities.high",
     //     false),
     // Todo(
     //     "Meeting",
     //     "Need to meet Mr. mohan and should talk to him regarding the business",
     //     DateTime.utc(2023),
     //     TimeOfDay.now(),
-    //     2,
+    //     "Priorities.medium",
     //     false),
     // Todo(
     //     "Meeting",
     //     "Need to meet Mr. mohan and should talk to him regarding the business",
     //     DateTime.utc(2023),
     //     TimeOfDay.now(),
-    //     3,
+    //     "Priorities.low",
     //     false),
     // Todo(
     //     "Meeting",
     //     "Need to meet Mr. mohan and should talk to him regarding the business",
     //     DateTime.utc(2023),
     //     TimeOfDay.now(),
-    //     1,
+    //     "Priorities.high",
     //     false)
   ];
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColorsLight.scaffoldBackgroundColor,
       body:
@@ -186,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SliverToBoxAdapter(
                   child: Container(
                     margin: EdgeInsets.only(left: AppLayout.getWidth(10)),
-                    height: AppLayout.getHeight(200),
+                    height: size.height * 0.25,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       physics: BouncingScrollPhysics(),

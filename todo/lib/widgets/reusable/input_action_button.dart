@@ -7,13 +7,13 @@ class InputActionButton extends StatelessWidget {
   final String label;
   final Color bgColor;
   final Color fgColor;
-  final VoidCallback test;
+  final VoidCallback onPressed;
   const InputActionButton(
       {super.key,
       required this.label,
       required this.bgColor,
       required this.fgColor,
-      required this.test});
+      required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class InputActionButton extends StatelessWidget {
           AppLayout.getHeight(55),
         ),
       ),
-      onPressed: test,
+      onPressed: onPressed,
       child: Text(label),
     );
   }
