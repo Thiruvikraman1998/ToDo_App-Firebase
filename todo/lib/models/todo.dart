@@ -24,7 +24,7 @@ class Todo {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> map = <String, dynamic>{};
-    id = id;
+    map['id'] = id;
     map['title'] = title;
     map['description'] = description;
     map['date'] = date;
@@ -40,8 +40,8 @@ class Todo {
     return map;
   }
 
-  Todo.fromMap(Map<String, dynamic> map, String id) {
-    id = id;
+  Todo.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
     title = map['title'];
     description = map['description'];
     date = (map['date'] as Timestamp).toDate();

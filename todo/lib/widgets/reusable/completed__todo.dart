@@ -4,8 +4,11 @@ import 'package:gap/gap.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 
+import '../../models/todo.dart';
+
 class CompletedTodo extends StatelessWidget {
-  const CompletedTodo({super.key});
+  const CompletedTodo({super.key, required this.completedTodo});
+  final Todo completedTodo;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,13 @@ class CompletedTodo extends StatelessWidget {
         top: AppLayout.getHeight(5),
         bottom: AppLayout.getHeight(5),
       ),
-      color: AppColorsLight.mediumPriority,
+      color: completedTodo.priority == Priorities.high.toString()
+          ? AppColorsLight.highPriority
+          : completedTodo.priority == Priorities.medium.toString()
+              ? AppColorsLight.mediumPriority
+              : completedTodo.priority == Priorities.low.toString()
+                  ? AppColorsLight.lowPriority
+                  : null,
       child: Container(
         height: AppLayout.getHeight(150),
         width: double.infinity,
@@ -34,15 +43,15 @@ class CompletedTodo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: const Text(
-                'Title',
-                style: TextStyle(
+              title: Text(
+                completedTodo.title!,
+                style: const TextStyle(
                     fontSize: 20,
                     color: Colors.black,
                     decoration: TextDecoration.lineThrough),
               ),
-              subtitle: const Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+              subtitle: Text(
+                completedTodo.description!,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -60,9 +69,9 @@ class CompletedTodo extends StatelessWidget {
             const Gap(10),
             Padding(
               padding: EdgeInsets.only(left: AppLayout.getWidth(20)),
-              child: const Text(
-                "Today, 11.30 PM",
-                style: TextStyle(fontSize: 17),
+              child: Text(
+                completedTodo.date!.toString(),
+                style: const TextStyle(fontSize: 17),
               ),
             )
           ],

@@ -132,7 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.black),
                                 children: [
                                   TextSpan(
-                                    text: "(${todoProvider.todos.length})",
+                                    text:
+                                        "(${todoProvider.activeTodoList().length})",
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.grey[600],
@@ -172,17 +173,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: CupertinoActivityIndicator(),
                             );
                           } else {
-                            List<Todo> todos = snapshot.data!;
+                            List<Todo> activeTodos =
+                                todoProvider.activeTodoList();
                             return ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: todos.length,
-                                itemBuilder: (context, index) {
-                                  // if (todos[index].isCompleted == false) {
-                                  return ActiveTodoCard(todo: todos[index]);
-                                  // } else {
-                                  //   return null;
-                                });
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: activeTodos.length,
+                              itemBuilder: (context, index) {
+                                //if (todos[index].isCompleted == false) {
+                                return ActiveTodoCard(todo: activeTodos[index]);
+                                //}
+                              },
+                            );
                           }
                         },
                       )),
@@ -225,11 +227,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    childCount: 10,
-                    (context, index) => const CompletedTodo(),
-                  ),
+                StreamBuilder<List<Todo>>(
+                  stream: todoProvider.todoStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SliverToBoxAdapter(
+                          child: CupertinoActivityIndicator());
+                    } else if (snapshot.hasData) {
+                      List<Todo> completedTodos =
+                          todoProvider.completedTodoList();
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          childCount: completedTodos.length,
+                          (context, index) {
+                            return CompletedTodo(
+                                completedTodo: completedTodos[index]);
+                          },
+                        ),
+                      );
+                    }
+                    return const Center(child: Text("No completed todos"));
+                  },
                 )
               ],
             ),

@@ -16,10 +16,6 @@ String getUid() {
   return userId;
 }
 
-// creating unique ids for each task's
-const Uuid uuid = Uuid();
-final taskId = uuid.v4();
-
 class TodoProvider with ChangeNotifier {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference todoCollections = FirebaseFirestore.instance
@@ -34,10 +30,24 @@ class TodoProvider with ChangeNotifier {
     _todoSubscription = todoCollections.snapshots().listen((querySnapshot) {
       todos = querySnapshot.docs.map((e) {
         final data = e.data() as Map<String, dynamic>;
-        return Todo.fromMap(data, e.id);
+        return Todo.fromMap(data);
       }).toList();
       notifyListeners();
     });
+  }
+
+  // List of active tasks
+  List<Todo> activeTodoList() {
+    var activeLenght =
+        todos.where((element) => element.isCompleted == false).toList();
+    return activeLenght;
+  }
+
+  // list of completes tasks
+  List<Todo> completedTodoList() {
+    var completedTodo =
+        todos.where((element) => element.isCompleted == true).toList();
+    return completedTodo;
   }
 
   // validate and create a todo
@@ -82,15 +92,13 @@ class TodoProvider with ChangeNotifier {
       );
       return;
     }
-    final DocumentReference docref = firestore
-        .collection('user')
-        .doc(getUid())
-        .collection('task')
-        .doc(taskId);
+    final DocumentReference docref =
+        firestore.collection('user').doc(getUid()).collection('task').doc(id);
     Todo newtodo =
         Todo(id, title, description, date, time, priority, isCompleted);
     try {
       await docref.set(newtodo.toMap());
+      notifyListeners();
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -122,7 +130,7 @@ class TodoProvider with ChangeNotifier {
       todoCollections.snapshots().map((querysnapshots) {
         return querysnapshots.docs.map((e) {
           final data = e.data() as Map<String, dynamic>;
-          return Todo.fromMap(data, e.id);
+          return Todo.fromMap(data);
         }).toList();
       });
 }
