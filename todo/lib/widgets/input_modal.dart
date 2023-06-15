@@ -6,6 +6,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/providers/todo_provider.dart';
 import 'package:todo/services/firebase_services.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
@@ -46,6 +48,7 @@ class _TaskInputModalState extends State<TaskInputModal> {
 
   @override
   Widget build(BuildContext context) {
+    final TodoProvider todoProvider = context.watch<TodoProvider>();
     return Container(
       height: MediaQuery.of(context).size.height * 0.80,
       margin: EdgeInsets.symmetric(
@@ -251,7 +254,18 @@ class _TaskInputModalState extends State<TaskInputModal> {
                 label: "Create",
                 bgColor: AppColorsLight.buttonColor,
                 fgColor: AppColorsLight.backgroundColor,
-                onPressed: _validateSubmission,
+                onPressed: () {
+                  todoProvider.validateAndCreateTask(
+                      context,
+                      taskId,
+                      _titleController.text.trim(),
+                      _descriptionController.text.trim(),
+                      _selectedDate,
+                      _convertedSelectedTime,
+                      _selectedPriority.toString(),
+                      false);
+                  Navigator.pop(context);
+                },
               ),
             ],
           )
@@ -296,67 +310,68 @@ class _TaskInputModalState extends State<TaskInputModal> {
     return DateTime(time.hour, time.minute);
   }
 
-  void _validateSubmission() async {
-    if (_titleController.text.isEmpty ||
-        _descriptionController.text.isEmpty ||
-        _selectedDate == null ||
-        _selectedTime == null) {
-      showDialog(
-        context: context,
-        builder: (dialogBoxContext) {
-          return AlertDialog(
-            title: const Text("Invalid Inputs"),
-            content: _titleController.text.isEmpty
-                ? const Text("Title is empty, enter a title")
-                : _descriptionController.text.isEmpty
-                    ? const Text("Description is Empty")
-                    : _selectedDate == null
-                        ? const Text("Date is not selected, select a date")
-                        : _selectedTime == null
-                            ? const Text("Time is not selected, select a time")
-                            : null,
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(dialogBoxContext);
-                },
-                child: const Text('Okay'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
-    }
-    FirebaseAuth auth = FirebaseAuth.instance;
-    final user = auth.currentUser;
-    String uid = user!.uid;
+  // void _validateSubmission() async {
+  //   if (_titleController.text.isEmpty ||
+  //       _descriptionController.text.isEmpty ||
+  //       _selectedDate == null ||
+  //       _selectedTime == null) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (dialogBoxContext) {
+  //         return AlertDialog(
+  //           title: const Text("Invalid Inputs"),
+  //           content: _titleController.text.isEmpty
+  //               ? const Text("Title is empty, enter a title")
+  //               : _descriptionController.text.isEmpty
+  //                   ? const Text("Description is Empty")
+  //                   : _selectedDate == null
+  //                       ? const Text("Date is not selected, select a date")
+  //                       : _selectedTime == null
+  //                           ? const Text("Time is not selected, select a time")
+  //                           : null,
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.pop(dialogBoxContext);
+  //               },
+  //               child: const Text('Okay'),
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     );
+  //     return;
+  //   }
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   final user = auth.currentUser;
+  //   String uid = user!.uid;
 
-    try {
-      await FirebaseFirestore.instance
-          .collection('user')
-          .doc(uid)
-          .collection("task")
-          .doc(taskId)
-          .set(Todo(
-                  _titleController.text.trim(),
-                  _descriptionController.text.trim(),
-                  _selectedDate,
-                  _convertedSelectedTime,
-                  _selectedPriority.toString(),
-                  false)
-              .toMap());
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
-    debugPrint(
-        "${_selectedDate!.toIso8601String()}, ${_selectedTime.toString()}, ${_selectedPriority.toString()}");
-    setState(() {
-      _titleController.text = '';
-      _descriptionController.text = '';
-      _selectedDate = null;
-      _selectedTime = null;
-    });
-    Navigator.pop(context);
-  }
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('user')
+  //         .doc(uid)
+  //         .collection("task")
+  //         .doc(taskId)
+  //         .set(Todo(
+  //                 taskId,
+  //                 _titleController.text.trim(),
+  //                 _descriptionController.text.trim(),
+  //                 _selectedDate,
+  //                 _convertedSelectedTime,
+  //                 _selectedPriority.toString(),
+  //                 false)
+  //             .toMap());
+  //   } catch (e) {
+  //     showSnackBar(context, e.toString());
+  //   }
+  //   debugPrint(
+  //       "${_selectedDate!.toIso8601String()}, ${_selectedTime.toString()}, ${_selectedPriority.toString()}");
+  //   setState(() {
+  //     _titleController.text = '';
+  //     _descriptionController.text = '';
+  //     _selectedDate = null;
+  //     _selectedTime = null;
+  //   });
+  //   Navigator.pop(context);
+  // }
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 
 final currentTime = DateTime.now();
@@ -18,11 +19,12 @@ class Todo {
   String? priority;
   bool? isCompleted;
 
-  Todo(this.title, this.description, this.date, this.time, this.priority,
-      this.isCompleted);
+  Todo(this.id, this.title, this.description, this.date, this.time,
+      this.priority, this.isCompleted);
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> map = <String, dynamic>{};
+    id = id;
     map['title'] = title;
     map['description'] = description;
     map['date'] = date;

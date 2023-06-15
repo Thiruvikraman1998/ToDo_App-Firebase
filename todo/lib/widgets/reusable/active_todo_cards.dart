@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/models/todo.dart';
+import 'package:todo/providers/todo_provider.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 
@@ -17,6 +19,7 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
   bool isCompleted = false;
   @override
   Widget build(BuildContext context) {
+    final TodoProvider todoProvider = context.watch<TodoProvider>();
     final size = MediaQuery.of(context).size;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(10)),
@@ -52,13 +55,15 @@ class _ActiveTodoCardState extends State<ActiveTodoCard> {
                 child: CupertinoCheckbox(
                   activeColor: AppColorsLight.buttonColor,
                   shape: const CircleBorder(),
-                  value: isCompleted,
+                  value: widget.todo.isCompleted,
                   onChanged: (value) {
-                    setState(
-                      () {
-                        isCompleted = value!;
-                      },
-                    );
+                    todoProvider.updateTodoStatus(widget.todo, value!);
+                    print(value);
+                    // setState(
+                    //   () {
+                    //     isCompleted = value!;
+                    //   },
+                    // );
                   },
                 ),
               ),

@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.black),
                                 children: [
                                   TextSpan(
-                                    text: "${todoProvider.todos.length}",
+                                    text: "(${todoProvider.todos.length})",
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.grey[600],
@@ -174,17 +174,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           } else {
                             List<Todo> todos = snapshot.data!;
                             return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: todos.length,
-                              itemBuilder: (context, index) {
-                                if (todos[index].isCompleted == false) {
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: todos.length,
+                                itemBuilder: (context, index) {
+                                  // if (todos[index].isCompleted == false) {
                                   return ActiveTodoCard(todo: todos[index]);
-                                } else {
-                                  return null;
-                                }
-                              },
-                            );
+                                  // } else {
+                                  //   return null;
+                                });
                           }
                         },
                       )),
