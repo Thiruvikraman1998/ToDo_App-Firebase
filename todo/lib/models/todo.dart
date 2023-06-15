@@ -10,6 +10,7 @@ final formattedDate = DateFormat.yMd();
 enum Priorities { high, medium, low }
 
 class Todo {
+  String? id;
   String? title;
   String? description;
   DateTime? date;
@@ -37,7 +38,8 @@ class Todo {
     return map;
   }
 
-  Todo.fromMap(Map<String, dynamic> map) {
+  Todo.fromMap(Map<String, dynamic> map, String id) {
+    id = id;
     title = map['title'];
     description = map['description'];
     date = (map['date'] as Timestamp).toDate();

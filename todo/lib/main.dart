@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/auth_wraper.dart';
+import 'package:todo/providers/todo_provider.dart';
 import 'package:todo/screens/auth_screens/login_screen.dart';
 import 'package:todo/screens/auth_screens/sign_up_screen.dart';
 import 'package:todo/screens/other_screens/home_screen.dart';
@@ -33,7 +34,10 @@ class TodoApp extends StatelessWidget {
         // this is for watching and changing the screens between login and home screen according to the user state changes.
         StreamProvider(
             create: (context) => context.read<FirebaseServices>().authState,
-            initialData: null)
+            initialData: null),
+
+        // creating todo provider to update the status
+        ChangeNotifierProvider(create: (context) => TodoProvider())
       ],
       child: MaterialApp(
         theme: ThemeData(useMaterial3: true),

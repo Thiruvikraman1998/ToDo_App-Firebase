@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/settings_enum.dart';
 import 'package:todo/models/todo.dart';
+import 'package:todo/providers/todo_provider.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 import 'package:todo/widgets/input_modal.dart';
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     getUid();
+    Provider.of<TodoProvider>(context, listen: false).streamTodos();
     super.initState();
   }
 
@@ -42,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TodoProvider todoProvider = Provider.of<TodoProvider>(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColorsLight.scaffoldBackgroundColor,
@@ -129,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.black),
                                 children: [
                                   TextSpan(
-                                    text: "(0)",
+                                    text: "${todoProvider.todos.length}",
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.grey[600],
@@ -160,12 +163,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                       margin: EdgeInsets.only(left: AppLayout.getWidth(10)),
                       height: size.height * 0.25,
-                      child: StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection('user')
-                            .doc(uid)
-                            .collection('task')
-                            .snapshots(),
+                      child: StreamBuilder<List<Todo>>(
+                        stream: todoProvider.todoStream,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -173,16 +172,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: CupertinoActivityIndicator(),
                             );
                           } else {
-                            List<Todo> todo = snapshot.data!.docs.map((doc) {
-                              return Todo.fromMap(doc.data());
-                            }).toList();
+                            List<Todo> todos = snapshot.data!;
                             return ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: todo.length,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: todos.length,
                               itemBuilder: (context, index) {
-                                if (todo[index].isCompleted == false) {
-                                  return ActiveTodoCard(todo: todo[index]);
+                                if (todos[index].isCompleted == false) {
+                                  return ActiveTodoCard(todo: todos[index]);
                                 } else {
                                   return null;
                                 }
