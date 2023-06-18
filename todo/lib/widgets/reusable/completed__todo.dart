@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/providers/todo_provider.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 
@@ -12,6 +14,7 @@ class CompletedTodo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TodoProvider todoProvider = context.watch<TodoProvider>();
     return Card(
       margin: EdgeInsets.only(
         left: AppLayout.getWidth(15),
@@ -60,8 +63,11 @@ class CompletedTodo extends StatelessWidget {
                 child: CupertinoCheckbox(
                     activeColor: AppColorsLight.buttonColor,
                     shape: const CircleBorder(),
-                    value: true,
-                    onChanged: (value) {}),
+                    value: completedTodo.isCompleted,
+                    onChanged: (value) {
+                      todoProvider.updateTodoStatus(completedTodo, value!);
+                      print(value);
+                    }),
               ),
             ),
             const Gap(10),

@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     AppColorsLight.buttonColor),
                               ),
                               child: const Text(
-                                "View more",
+                                "View all",
                                 style: TextStyle(fontSize: 15),
                               ),
                             )
@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     AppColorsLight.buttonColor),
                               ),
                               child: const Text(
-                                "View more",
+                                "View all",
                                 style: TextStyle(fontSize: 15),
                               ),
                             )

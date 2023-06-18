@@ -16,7 +16,7 @@ class ActiveTodoCard extends StatefulWidget {
 }
 
 class _ActiveTodoCardState extends State<ActiveTodoCard> {
-  bool isCompleted = false;
+  //bool isCompleted = false;
   @override
   Widget build(BuildContext context) {
     final TodoProvider todoProvider = context.watch<TodoProvider>();
