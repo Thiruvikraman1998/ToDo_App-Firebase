@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/settings_enum.dart';
 import 'package:todo/models/todo.dart';
 import 'package:todo/providers/todo_provider.dart';
+import 'package:todo/screens/other_screens/all_active_todo_list.dart';
 import 'package:todo/utils/app_colors.dart';
 import 'package:todo/utils/app_layout.dart';
 import 'package:todo/widgets/input_modal.dart';
@@ -149,9 +151,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 foregroundColor: MaterialStatePropertyAll(
                                     AppColorsLight.buttonColor),
                               ),
-                              child: const Text(
-                                "View all",
-                                style: TextStyle(fontSize: 15),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, '/all_active_todo');
+                                },
+                                child: const Text(
+                                  "View all",
+                                  style: TextStyle(fontSize: 15),
+                                ),
                               ),
                             )
                           ],
@@ -181,7 +189,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemCount: activeTodos.length,
                               itemBuilder: (context, index) {
                                 //if (todos[index].isCompleted == false) {
-                                return ActiveTodoCard(todo: activeTodos[index]);
+                                return AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 375),
+                                  child: SlideAnimation(
+                                    horizontalOffset: 65.0,
+                                    child: FadeInAnimation(
+                                      child: ActiveTodoCard(
+                                        todo: activeTodos[index],
+                                      ),
+                                    ),
+                                  ),
+                                );
                                 //}
                               },
                             );
@@ -240,8 +259,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         delegate: SliverChildBuilderDelegate(
                           childCount: completedTodos.length,
                           (context, index) {
-                            return CompletedTodo(
-                                completedTodo: completedTodos[index]);
+                            return AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 375),
+                              child: SlideAnimation(
+                                verticalOffset: 44.0,
+                                child: FadeInAnimation(
+                                  child: CompletedTodo(
+                                    completedTodo: completedTodos[index],
+                                  ),
+                                ),
+                              ),
+                            );
                           },
                         ),
                       );

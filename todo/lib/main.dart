@@ -10,6 +10,7 @@ import 'package:todo/screens/auth_screens/sign_up_screen.dart';
 import 'package:todo/screens/other_screens/home_screen.dart';
 import 'package:todo/services/firebase_services.dart';
 
+import 'screens/other_screens/all_active_todo_list.dart';
 import 'screens/other_screens/onboarding_screen.dart';
 
 void main() async {
@@ -45,10 +46,11 @@ class TodoApp extends StatelessWidget {
         title: 'ToDo App',
         home: const OnBoardingScreen(),
         routes: {
-          '/auth': (context) => AuthWraper(),
-          '/login': (context) => LoginScreen(),
-          '/signup': (context) => SignUp(),
-          '/home': (context) => HomeScreen(),
+          '/auth': (context) => const AuthWraper(),
+          '/login': (context) => const LoginScreen(),
+          '/signup': (context) => const SignUp(),
+          '/home': (context) => const HomeScreen(),
+          '/all_active_todo': (context) => const AllActiveTodoList(),
         },
       ),
     );
